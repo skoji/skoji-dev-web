@@ -20,6 +20,7 @@ body {
 }
 
 header#main-header {
+  padding-inline: 1rem;
   background-color: var(--surface);
   padding-block: 1rem;
   > .header-inner {
