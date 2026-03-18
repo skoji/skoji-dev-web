@@ -1,8 +1,11 @@
-<html>
+<html lang="<%= page[:lang] %>"> 
   <head>
     <%= include "head" %>
   </head>
   <body>
+    <header>
+      <%= include page[:header] || 'header' %>
+    </header>
     <main>
       <%= content %>
     </main>

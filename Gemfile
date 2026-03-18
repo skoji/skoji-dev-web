@@ -2,8 +2,6 @@
 
 source "https://rubygems.org"
 
-# gem "rails"
-
-gem "isola", "~> 0.1.0"
+gem "isola", "~> 0.1.2"
 
 gem "standard", "~> 1.54"

@@ -4,7 +4,7 @@ GEM
     ast (2.4.3)
     ffi (1.17.3)
     ffi (1.17.3-arm64-darwin)
-    isola (0.1.1)
+    isola (0.1.2)
       kramdown (~> 2.5)
       listen (~> 3.10)
       thor (~> 1.5)
@@ -75,14 +75,14 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  isola (~> 0.1.0)
+  isola (~> 0.1.2)
   standard (~> 1.54)
 
 CHECKSUMS
   ast (2.4.3) sha256=954615157c1d6a382bc27d690d973195e79db7f55e9765ac7c481c60bdb4d383
   ffi (1.17.3) sha256=0e9f39f7bb3934f77ad6feab49662be77e87eedcdeb2a3f5c0234c2938563d4c
   ffi (1.17.3-arm64-darwin) sha256=0c690555d4cee17a7f07c04d59df39b2fba74ec440b19da1f685c6579bb0717f
-  isola (0.1.1) sha256=c76e4aaec61cfc9620246567cfa64dd2acfacb6266cc08c7bd7dd325d160c3ff
+  isola (0.1.2) sha256=318d116d9e308a4e0724fd8b2894e314f02e6e691b73a230c1ffb841045417c2
   json (2.19.1) sha256=dd94fdc59e48bff85913829a32350b3148156bc4fd2a95a2568a78b11344082d
   kramdown (2.5.2) sha256=1ba542204c66b6f9111ff00dcc26075b95b220b07f2905d8261740c82f7f02fa
   language_server-protocol (3.17.0.5) sha256=fd1e39a51a28bf3eec959379985a72e296e9f9acfce46f6a79d31ca8760803cc
