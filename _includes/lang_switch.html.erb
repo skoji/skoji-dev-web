@@ -1,0 +1,4 @@
+<% page[:translations]&.each do |lang, url| %>
+  <% next if lang.to_s == page[:lang].to_s %>
+  <a href="<%= url %>" lang="<%= lang %>" class="lang-switch"><%= site.language_label(lang) %></a>
+<% end %>

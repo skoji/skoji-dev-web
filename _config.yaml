@@ -1,5 +1,11 @@
 url: https://skoji.dev
 title: 群島舎
 default_language: ja
+languages:
+  ja:
+    label: "日本語"
+  en:
+    label: "English"
+    title: "Guntosha"
 excludes:
   - README.md

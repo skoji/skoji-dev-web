@@ -2,6 +2,6 @@
 
 source "https://rubygems.org"
 
-gem "isola", "~> 0.1.3"
+gem "isola", "~> 0.2.1"
 
 gem "standard", "~> 1.54"
