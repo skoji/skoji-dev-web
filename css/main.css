@@ -174,12 +174,6 @@ header#main-header {
 /* ---- responsive nav ---- */
 
 @media (max-width: 600px) {
-  .site-nav {
-    position: absolute;
-    top: 0;
-    right: 0;
-  }
-
   .nav-toggle {
     display: block;
   }
@@ -235,6 +229,12 @@ h1, h2, h3 {
           text-decoration: underline;
       }
   }
+}
+
+section.toppage-about {
+    > p {
+        margin-block-start: 2em;
+    }
 }
 
 section.division {
