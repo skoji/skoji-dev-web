@@ -1,0 +1,360 @@
+---
+layout: base
+title: shelff JSON Specification
+---
+
+<h2>shelff JSON Specification</h2>
+
+<p>shelff stores metadata and reading progress for PDF files as JSON files in iCloud. This page describes the specification of the JSON files that shelff reads and writes.</p>
+
+<p>shelff manages its data through these JSON files. Other tools can interoperate with shelff by reading and writing the same files.</p>
+
+<nav class="spec-toc">
+  <h3>Contents</h3>
+  <ol>
+    <li><a href="#overview">Overview</a></li>
+    <li><a href="#meta-json">Metadata File</a></li>
+    <li><a href="#categories-json">Categories File</a></li>
+    <li><a href="#tags-json">Tags File</a></li>
+    <li><a href="#schema">JSON Schema</a></li>
+  </ol>
+</nav>
+
+<section class="spec-section" id="overview">
+  <h3>Overview</h3>
+
+  <p>shelff uses three types of JSON files.</p>
+
+  <table class="spec-table">
+    <thead>
+      <tr>
+        <th>File</th>
+        <th>Location</th>
+        <th>Purpose</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>*.pdf.meta.json</code></td>
+        <td>Same directory as the PDF</td>
+        <td>Per-PDF metadata, reading progress, and display settings</td>
+      </tr>
+      <tr>
+        <td><code>categories.json</code></td>
+        <td>shelff document root</td>
+        <td>Category definitions and ordering</td>
+      </tr>
+      <tr>
+        <td><code>tags.json</code></td>
+        <td>shelff document root</td>
+        <td>Tag display order</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <p>The metadata file (<code>*.pdf.meta.json</code>) is automatically created when a PDF is first opened in shelff. At that point, <code>dc:title</code> is set to the filename.</p>
+
+  <p>All files use UTF-8 encoding. Dates are recorded in <a href="https://en.wikipedia.org/wiki/ISO_8601">ISO 8601</a> format.</p>
+</section>
+
+<section class="spec-section" id="meta-json">
+  <h3>Metadata File <code>*.pdf.meta.json</code></h3>
+
+  <p>A metadata file corresponds to a single PDF file. It is stored in the same directory as the PDF, with <code>.meta.json</code> appended to the original filename.</p>
+
+  <p>Example: <code>my-book.pdf</code> → <code>my-book.pdf.meta.json</code></p>
+
+  <h4>Example</h4>
+
+<pre><code>{
+  "schemaVersion": 1,
+  "metadata": {
+    "dc:title": "Introduction to Programming",
+    "dc:creator": ["Jane Smith"],
+    "dc:publisher": "Tech Press",
+    "dc:date": "2024",
+    "dc:language": "en",
+    "dc:subject": ["Programming", "Introduction"],
+    "dc:identifier": "978-0-00-000000-0"
+  },
+  "reading": {
+    "lastReadPage": 42,
+    "totalPages": 300,
+    "lastReadAt": "2025-03-20T14:30:00Z",
+    "status": "reading",
+    "finishedAt": null
+  },
+  "display": {
+    "direction": "LTR",
+    "pageLayout": "spread-with-cover"
+  },
+  "category": "Technical",
+  "tags": ["Swift", "Beginner"]
+}</code></pre>
+
+  <h4>Top-level Fields</h4>
+
+  <table class="spec-table">
+    <thead>
+      <tr>
+        <th>Field</th>
+        <th>Type</th>
+        <th>Required</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>schemaVersion</code></td>
+        <td>Integer</td>
+        <td>Yes</td>
+        <td>Schema version. Currently <code>1</code></td>
+      </tr>
+      <tr>
+        <td><code>metadata</code></td>
+        <td>Object</td>
+        <td>Yes</td>
+        <td>Bibliographic metadata (see below)</td>
+      </tr>
+      <tr>
+        <td><code>reading</code></td>
+        <td>Object</td>
+        <td>No</td>
+        <td>Reading progress (see below)</td>
+      </tr>
+      <tr>
+        <td><code>display</code></td>
+        <td>Object</td>
+        <td>No</td>
+        <td>Display settings (see below)</td>
+      </tr>
+      <tr>
+        <td><code>category</code></td>
+        <td>String</td>
+        <td>No</td>
+        <td>Category name (one per PDF)</td>
+      </tr>
+      <tr>
+        <td><code>tags</code></td>
+        <td>Array of strings</td>
+        <td>No</td>
+        <td>Tag names</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h4><code>metadata</code> Object</h4>
+
+  <p>Bibliographic metadata. Field names use <code>dc:</code>-prefixed keys based on <a href="https://www.dublincore.org/specifications/dublin-core/dcmi-terms/">Dublin Core Metadata Terms</a>.</p>
+
+  <table class="spec-table">
+    <thead>
+      <tr>
+        <th>Field</th>
+        <th>Type</th>
+        <th>Required</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>dc:title</code></td>
+        <td>String</td>
+        <td>Yes</td>
+        <td>Title</td>
+      </tr>
+      <tr>
+        <td><code>dc:creator</code></td>
+        <td>Array of strings</td>
+        <td>No</td>
+        <td>Author(s)</td>
+      </tr>
+      <tr>
+        <td><code>dc:date</code></td>
+        <td>String</td>
+        <td>No</td>
+        <td>Date. <code>"2024"</code>, <code>"2024-06"</code>, and <code>"2024-06-15"</code> are all valid</td>
+      </tr>
+      <tr>
+        <td><code>dc:publisher</code></td>
+        <td>String</td>
+        <td>No</td>
+        <td>Publisher</td>
+      </tr>
+      <tr>
+        <td><code>dc:language</code></td>
+        <td>String</td>
+        <td>No</td>
+        <td>Language code (e.g., <code>"ja"</code>, <code>"en"</code>)</td>
+      </tr>
+      <tr>
+        <td><code>dc:subject</code></td>
+        <td>Array of strings</td>
+        <td>No</td>
+        <td>Subjects / keywords</td>
+      </tr>
+      <tr>
+        <td><code>dc:identifier</code></td>
+        <td>String</td>
+        <td>No</td>
+        <td>Identifier (e.g., ISBN)</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h4><code>reading</code> Object</h4>
+
+  <table class="spec-table">
+    <thead>
+      <tr>
+        <th>Field</th>
+        <th>Type</th>
+        <th>Required</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>lastReadPage</code></td>
+        <td>Integer</td>
+        <td>Yes</td>
+        <td>Last read page number (1-based)</td>
+      </tr>
+      <tr>
+        <td><code>totalPages</code></td>
+        <td>Integer</td>
+        <td>Yes</td>
+        <td>Total number of pages</td>
+      </tr>
+      <tr>
+        <td><code>lastReadAt</code></td>
+        <td>String</td>
+        <td>Yes</td>
+        <td>Last read timestamp (ISO 8601)</td>
+      </tr>
+      <tr>
+        <td><code>status</code></td>
+        <td>String</td>
+        <td>No</td>
+        <td>Reading status: <code>"unread"</code> / <code>"reading"</code> / <code>"finished"</code></td>
+      </tr>
+      <tr>
+        <td><code>finishedAt</code></td>
+        <td>String</td>
+        <td>No</td>
+        <td>Completion timestamp (ISO 8601)</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h4><code>display</code> Object</h4>
+
+  <table class="spec-table">
+    <thead>
+      <tr>
+        <th>Field</th>
+        <th>Type</th>
+        <th>Required</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>direction</code></td>
+        <td>String</td>
+        <td>Yes</td>
+        <td>Reading direction: <code>"LTR"</code> (left-to-right) / <code>"RTL"</code> (right-to-left)</td>
+      </tr>
+      <tr>
+        <td><code>pageLayout</code></td>
+        <td>String</td>
+        <td>No</td>
+        <td>Page layout: <code>"single"</code> / <code>"spread"</code> / <code>"spread-with-cover"</code></td>
+      </tr>
+    </tbody>
+  </table>
+</section>
+
+<section class="spec-section" id="categories-json">
+  <h3>Categories File <code>categories.json</code></h3>
+
+  <p>Stored in the shelff document root, this file defines the available categories. Each PDF can belong to at most one category.</p>
+
+  <h4>Example</h4>
+
+<pre><code>{
+  "version": 1,
+  "categories": [
+    { "name": "Technical", "order": 0 },
+    { "name": "Fiction", "order": 1 },
+    { "name": "Papers", "order": 2 }
+  ]
+}</code></pre>
+
+  <table class="spec-table">
+    <thead>
+      <tr>
+        <th>Field</th>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>version</code></td>
+        <td>Integer</td>
+        <td>Schema version. Currently <code>1</code></td>
+      </tr>
+      <tr>
+        <td><code>categories</code></td>
+        <td>Array</td>
+        <td>Array of categories. Each element has <code>name</code> (string) and <code>order</code> (integer, 0-based)</td>
+      </tr>
+    </tbody>
+  </table>
+</section>
+
+<section class="spec-section" id="tags-json">
+  <h3>Tags File <code>tags.json</code></h3>
+
+  <p>Stored in the shelff document root, this file defines the display order of tags. Tags themselves are defined in the <code>tags</code> field of each PDF's metadata file. This file only manages display ordering.</p>
+
+  <h4>Example</h4>
+
+<pre><code>{
+  "version": 1,
+  "tagOrder": ["Swift", "SwiftUI", "Programming", "To Read"]
+}</code></pre>
+
+  <table class="spec-table">
+    <thead>
+      <tr>
+        <th>Field</th>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>version</code></td>
+        <td>Integer</td>
+        <td>Schema version. Currently <code>1</code></td>
+      </tr>
+      <tr>
+        <td><code>tagOrder</code></td>
+        <td>Array of strings</td>
+        <td>Tag display order. Tags not in this array are appended in name order</td>
+      </tr>
+    </tbody>
+  </table>
+</section>
+
+<section class="spec-section" id="schema">
+  <h3>JSON Schema</h3>
+
+  <p>Formal JSON Schema definitions for each file format are available in the following repository.</p>
+
+  <ul>
+    <li><a href="https://github.com/skoji/shelff-schema">github.com/skoji/shelff-schema</a></li>
+  </ul>
+</section>

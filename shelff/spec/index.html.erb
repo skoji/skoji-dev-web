@@ -1,0 +1,360 @@
+---
+layout: base
+title: shelff JSON仕様
+---
+
+<h2>shelff JSON仕様</h2>
+
+<p>shelffは、PDFファイルのメタデータや読書進捗をJSONファイルとしてiCloud上に保存します。このページでは、shelffが読み書きするJSONファイルの仕様を説明します。</p>
+
+<p>shelffはこれらのJSONファイルを通じてデータを管理しており、他のツールからも同じファイルを読み書きすることで、shelffと連携できます。</p>
+
+<nav class="spec-toc">
+  <h3>目次</h3>
+  <ol>
+    <li><a href="#overview">概要</a></li>
+    <li><a href="#meta-json">メタデータファイル</a></li>
+    <li><a href="#categories-json">カテゴリファイル</a></li>
+    <li><a href="#tags-json">タグファイル</a></li>
+    <li><a href="#schema">JSON Schema</a></li>
+  </ol>
+</nav>
+
+<section class="spec-section" id="overview">
+  <h3>概要</h3>
+
+  <p>shelffは3種類のJSONファイルを使用します。</p>
+
+  <table class="spec-table">
+    <thead>
+      <tr>
+        <th>ファイル</th>
+        <th>場所</th>
+        <th>役割</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>*.pdf.meta.json</code></td>
+        <td>各PDFと同じディレクトリ</td>
+        <td>個別PDFのメタデータ・読書進捗・表示設定</td>
+      </tr>
+      <tr>
+        <td><code>categories.json</code></td>
+        <td>shelffドキュメントルート</td>
+        <td>カテゴリの定義と順序</td>
+      </tr>
+      <tr>
+        <td><code>tags.json</code></td>
+        <td>shelffドキュメントルート</td>
+        <td>タグの表示順序</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <p>メタデータファイル（<code>*.pdf.meta.json</code>）は、shelffでPDFを最初に開いたときに自動的に作成されます。このとき<code>dc:title</code>にはファイル名が設定されます。</p>
+
+  <p>文字エンコーディングはUTF-8です。日付は<a href="https://ja.wikipedia.org/wiki/ISO_8601">ISO 8601</a>形式で記録されます。</p>
+</section>
+
+<section class="spec-section" id="meta-json">
+  <h3>メタデータファイル <code>*.pdf.meta.json</code></h3>
+
+  <p>各PDFファイルに対応するメタデータファイルです。PDFファイルと同じディレクトリに、元のファイル名に<code>.meta.json</code>を付加した名前で保存されます。</p>
+
+  <p>例: <code>my-book.pdf</code> → <code>my-book.pdf.meta.json</code></p>
+
+  <h4>例</h4>
+
+<pre><code>{
+  "schemaVersion": 1,
+  "metadata": {
+    "dc:title": "プログラミング入門",
+    "dc:creator": ["山田太郎"],
+    "dc:publisher": "技術出版社",
+    "dc:date": "2024",
+    "dc:language": "ja",
+    "dc:subject": ["プログラミング", "入門"],
+    "dc:identifier": "978-4-00-000000-0"
+  },
+  "reading": {
+    "lastReadPage": 42,
+    "totalPages": 300,
+    "lastReadAt": "2025-03-20T14:30:00Z",
+    "status": "reading",
+    "finishedAt": null
+  },
+  "display": {
+    "direction": "LTR",
+    "pageLayout": "spread-with-cover"
+  },
+  "category": "技術書",
+  "tags": ["Swift", "入門"]
+}</code></pre>
+
+  <h4>トップレベルフィールド</h4>
+
+  <table class="spec-table">
+    <thead>
+      <tr>
+        <th>フィールド</th>
+        <th>型</th>
+        <th>必須</th>
+        <th>説明</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>schemaVersion</code></td>
+        <td>整数</td>
+        <td>はい</td>
+        <td>スキーマバージョン。現在は<code>1</code></td>
+      </tr>
+      <tr>
+        <td><code>metadata</code></td>
+        <td>オブジェクト</td>
+        <td>はい</td>
+        <td>書誌メタデータ（後述）</td>
+      </tr>
+      <tr>
+        <td><code>reading</code></td>
+        <td>オブジェクト</td>
+        <td>いいえ</td>
+        <td>読書進捗（後述）</td>
+      </tr>
+      <tr>
+        <td><code>display</code></td>
+        <td>オブジェクト</td>
+        <td>いいえ</td>
+        <td>表示設定（後述）</td>
+      </tr>
+      <tr>
+        <td><code>category</code></td>
+        <td>文字列</td>
+        <td>いいえ</td>
+        <td>カテゴリ名（1つのPDFにつき1つ）</td>
+      </tr>
+      <tr>
+        <td><code>tags</code></td>
+        <td>文字列の配列</td>
+        <td>いいえ</td>
+        <td>タグ名の配列</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h4><code>metadata</code>オブジェクト</h4>
+
+  <p>書誌メタデータです。フィールド名は<a href="https://www.dublincore.org/specifications/dublin-core/dcmi-terms/">Dublin Core Metadata Terms</a>に基づいた<code>dc:</code>接頭辞付きのキーを使用しています。</p>
+
+  <table class="spec-table">
+    <thead>
+      <tr>
+        <th>フィールド</th>
+        <th>型</th>
+        <th>必須</th>
+        <th>説明</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>dc:title</code></td>
+        <td>文字列</td>
+        <td>はい</td>
+        <td>タイトル</td>
+      </tr>
+      <tr>
+        <td><code>dc:creator</code></td>
+        <td>文字列の配列</td>
+        <td>いいえ</td>
+        <td>著者</td>
+      </tr>
+      <tr>
+        <td><code>dc:date</code></td>
+        <td>文字列</td>
+        <td>いいえ</td>
+        <td>日付。<code>"2024"</code>、<code>"2024-06"</code>、<code>"2024-06-15"</code>のいずれも有効</td>
+      </tr>
+      <tr>
+        <td><code>dc:publisher</code></td>
+        <td>文字列</td>
+        <td>いいえ</td>
+        <td>出版社</td>
+      </tr>
+      <tr>
+        <td><code>dc:language</code></td>
+        <td>文字列</td>
+        <td>いいえ</td>
+        <td>言語コード（例: <code>"ja"</code>、<code>"en"</code>）</td>
+      </tr>
+      <tr>
+        <td><code>dc:subject</code></td>
+        <td>文字列の配列</td>
+        <td>いいえ</td>
+        <td>主題・キーワード</td>
+      </tr>
+      <tr>
+        <td><code>dc:identifier</code></td>
+        <td>文字列</td>
+        <td>いいえ</td>
+        <td>識別子（ISBNなど）</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h4><code>reading</code>オブジェクト</h4>
+
+  <table class="spec-table">
+    <thead>
+      <tr>
+        <th>フィールド</th>
+        <th>型</th>
+        <th>必須</th>
+        <th>説明</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>lastReadPage</code></td>
+        <td>整数</td>
+        <td>はい</td>
+        <td>最後に読んだページ番号（1始まり）</td>
+      </tr>
+      <tr>
+        <td><code>totalPages</code></td>
+        <td>整数</td>
+        <td>はい</td>
+        <td>総ページ数</td>
+      </tr>
+      <tr>
+        <td><code>lastReadAt</code></td>
+        <td>文字列</td>
+        <td>はい</td>
+        <td>最終閲覧日時（ISO 8601）</td>
+      </tr>
+      <tr>
+        <td><code>status</code></td>
+        <td>文字列</td>
+        <td>いいえ</td>
+        <td>読書ステータス: <code>"unread"</code> / <code>"reading"</code> / <code>"finished"</code></td>
+      </tr>
+      <tr>
+        <td><code>finishedAt</code></td>
+        <td>文字列</td>
+        <td>いいえ</td>
+        <td>読了日時（ISO 8601）</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h4><code>display</code>オブジェクト</h4>
+
+  <table class="spec-table">
+    <thead>
+      <tr>
+        <th>フィールド</th>
+        <th>型</th>
+        <th>必須</th>
+        <th>説明</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>direction</code></td>
+        <td>文字列</td>
+        <td>はい</td>
+        <td>読み方向: <code>"LTR"</code>（左→右）/ <code>"RTL"</code>（右→左）</td>
+      </tr>
+      <tr>
+        <td><code>pageLayout</code></td>
+        <td>文字列</td>
+        <td>いいえ</td>
+        <td>ページレイアウト: <code>"single"</code> / <code>"spread"</code> / <code>"spread-with-cover"</code></td>
+      </tr>
+    </tbody>
+  </table>
+</section>
+
+<section class="spec-section" id="categories-json">
+  <h3>カテゴリファイル <code>categories.json</code></h3>
+
+  <p>shelffドキュメントルートに保存される、カテゴリの定義ファイルです。各PDFは最大1つのカテゴリに属します。</p>
+
+  <h4>例</h4>
+
+<pre><code>{
+  "version": 1,
+  "categories": [
+    { "name": "技術書", "order": 0 },
+    { "name": "小説", "order": 1 },
+    { "name": "論文", "order": 2 }
+  ]
+}</code></pre>
+
+  <table class="spec-table">
+    <thead>
+      <tr>
+        <th>フィールド</th>
+        <th>型</th>
+        <th>説明</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>version</code></td>
+        <td>整数</td>
+        <td>スキーマバージョン。現在は<code>1</code></td>
+      </tr>
+      <tr>
+        <td><code>categories</code></td>
+        <td>配列</td>
+        <td>カテゴリの配列。各要素は<code>name</code>（文字列）と<code>order</code>（整数、0始まり）を持つ</td>
+      </tr>
+    </tbody>
+  </table>
+</section>
+
+<section class="spec-section" id="tags-json">
+  <h3>タグファイル <code>tags.json</code></h3>
+
+  <p>shelffドキュメントルートに保存される、タグの表示順序ファイルです。タグ自体の定義は各PDFのメタデータファイル内の<code>tags</code>フィールドで行われます。このファイルはタグの表示順序のみを管理します。</p>
+
+  <h4>例</h4>
+
+<pre><code>{
+  "version": 1,
+  "tagOrder": ["Swift", "SwiftUI", "プログラミング", "読みかけ"]
+}</code></pre>
+
+  <table class="spec-table">
+    <thead>
+      <tr>
+        <th>フィールド</th>
+        <th>型</th>
+        <th>説明</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>version</code></td>
+        <td>整数</td>
+        <td>スキーマバージョン。現在は<code>1</code></td>
+      </tr>
+      <tr>
+        <td><code>tagOrder</code></td>
+        <td>文字列の配列</td>
+        <td>タグの表示順序。この配列に含まれないタグは名前順で末尾に表示される</td>
+      </tr>
+    </tbody>
+  </table>
+</section>
+
+<section class="spec-section" id="schema">
+  <h3>JSON Schema</h3>
+
+  <p>各ファイル形式のJSON Schemaは以下のリポジトリで公開しています。</p>
+
+  <ul>
+    <li><a href="https://github.com/skoji/shelff-schema">github.com/skoji/shelff-schema</a></li>
+  </ul>
+</section>
