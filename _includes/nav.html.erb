@@ -1,3 +1,25 @@
-<nav>
-  <a href="<%= lang_path('/about.html') %>">About</a>
+<nav class="site-nav">
+  <button class="nav-toggle" aria-label="Menu" aria-expanded="false"
+    onclick="this.setAttribute('aria-expanded', this.getAttribute('aria-expanded') === 'false' ? 'true' : 'false')">
+    <span class="hamburger"></span>
+  </button>
+  <div class="nav-menu">
+    <div class="nav-links">
+      <a href="<%= lang_path('/shelff/') %>">shelff</a>
+      <a href="<%= lang_path('/about.html') %>">about</a>
+    </div>
+    <div class="lang-links">
+      <% if page[:lang].to_s == "en" %>
+        <span class="lang-current">English</span>
+      <% else %>
+        <a href="<%= page[:translations]&.dig(:en) || page[:translations]&.dig('en') || '/en/' %>" lang="en">English</a>
+      <% end %>
+      <span class="lang-sep">|</span>
+      <% if page[:lang].to_s == "ja" %>
+        <span class="lang-current">日本語</span>
+      <% else %>
+        <a href="<%= page[:translations]&.dig(:ja) || page[:translations]&.dig('ja') || '/' %>" lang="ja">日本語</a>
+      <% end %>
+    </div>
+  </div>
 </nav>
