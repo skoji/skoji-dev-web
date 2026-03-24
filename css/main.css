@@ -96,12 +96,12 @@ header#main-header {
 }
 
 .lang-links a {
-  color: var(--muted);
+  color: var(--accent);    
   text-decoration: none;
 }
 
 .lang-links a:visited {
-  color: var(--muted);
+  color: var(--accent);
 }
 
 .lang-links a:hover {
@@ -116,7 +116,6 @@ header#main-header {
 
 .lang-current {
   color: var(--text);
-  font-weight: bold;
 }
 
 /* ---- hamburger button ---- */
