@@ -7,5 +7,6 @@ languages:
   en:
     label: "English"
     title: "Guntosha"
+tilt_extensions: [.scss ]
 excludes:
   - README.md

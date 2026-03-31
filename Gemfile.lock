@@ -2,9 +2,16 @@ GEM
   remote: https://rubygems.org/
   specs:
     ast (2.4.3)
+    bigdecimal (4.1.0)
     ffi (1.17.3)
     ffi (1.17.3-arm64-darwin)
-    isola (0.2.1)
+    google-protobuf (4.34.1)
+      bigdecimal
+      rake (~> 13.3)
+    google-protobuf (4.34.1-arm64-darwin)
+      bigdecimal
+      rake (~> 13.3)
+    isola (0.3.0)
       kramdown (~> 2.5)
       listen (~> 3.10)
       thor (~> 1.5)
@@ -27,6 +34,7 @@ GEM
     prism (1.9.0)
     racc (1.8.1)
     rainbow (3.1.1)
+    rake (13.3.1)
     rb-fsevent (0.11.2)
     rb-inotify (0.11.1)
       ffi (~> 1.0)
@@ -51,6 +59,11 @@ GEM
       rubocop (>= 1.75.0, < 2.0)
       rubocop-ast (>= 1.47.1, < 2.0)
     ruby-progressbar (1.13.0)
+    sass-embedded (1.98.0)
+      google-protobuf (~> 4.31)
+      rake (>= 13)
+    sass-embedded (1.98.0-arm64-darwin)
+      google-protobuf (~> 4.31)
     standard (1.54.0)
       language_server-protocol (~> 3.17.0.2)
       lint_roller (~> 1.0)
@@ -75,14 +88,18 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  isola (~> 0.2.1)
+  isola (~> 0.3.0)
+  sass-embedded (~> 1.98)
   standard (~> 1.54)
 
 CHECKSUMS
   ast (2.4.3) sha256=954615157c1d6a382bc27d690d973195e79db7f55e9765ac7c481c60bdb4d383
+  bigdecimal (4.1.0) sha256=6dc07767aa3dc456ccd48e7ae70a07b474e9afd7c5bc576f80bd6da5c8dd6cae
   ffi (1.17.3) sha256=0e9f39f7bb3934f77ad6feab49662be77e87eedcdeb2a3f5c0234c2938563d4c
   ffi (1.17.3-arm64-darwin) sha256=0c690555d4cee17a7f07c04d59df39b2fba74ec440b19da1f685c6579bb0717f
-  isola (0.2.1) sha256=8aed197ded1677cb13da8ffbe9c4220167680e510b76a84240c1e1aaad6b447e
+  google-protobuf (4.34.1) sha256=347181542b8d659c60f028fa3791c9cccce651a91ad27782dbc5c5e374796cdc
+  google-protobuf (4.34.1-arm64-darwin) sha256=2745061f973119e6e7f3c81a0c77025d291a3caa6585a2cd24a25bbc7bedb267
+  isola (0.3.0) sha256=a412825aca5f4f63f008166932585aabcb19c90c7aad4e3cf5960c6f4af3fa4a
   json (2.19.1) sha256=dd94fdc59e48bff85913829a32350b3148156bc4fd2a95a2568a78b11344082d
   kramdown (2.5.2) sha256=1ba542204c66b6f9111ff00dcc26075b95b220b07f2905d8261740c82f7f02fa
   language_server-protocol (3.17.0.5) sha256=fd1e39a51a28bf3eec959379985a72e296e9f9acfce46f6a79d31ca8760803cc
@@ -94,6 +111,7 @@ CHECKSUMS
   prism (1.9.0) sha256=7b530c6a9f92c24300014919c9dcbc055bf4cdf51ec30aed099b06cd6674ef85
   racc (1.8.1) sha256=4a7f6929691dbec8b5209a0b373bc2614882b55fc5d2e447a21aaa691303d62f
   rainbow (3.1.1) sha256=039491aa3a89f42efa1d6dec2fc4e62ede96eb6acd95e52f1ad581182b79bc6a
+  rake (13.3.1) sha256=8c9e89d09f66a26a01264e7e3480ec0607f0c497a861ef16063604b1b08eb19c
   rb-fsevent (0.11.2) sha256=43900b972e7301d6570f64b850a5aa67833ee7d87b458ee92805d56b7318aefe
   rb-inotify (0.11.1) sha256=a0a700441239b0ff18eb65e3866236cd78613d6b9f78fea1f9ac47a85e47be6e
   regexp_parser (2.11.3) sha256=ca13f381a173b7a93450e53459075c9b76a10433caadcb2f1180f2c741fc55a4
@@ -102,6 +120,8 @@ CHECKSUMS
   rubocop-ast (1.49.1) sha256=4412f3ee70f6fe4546cc489548e0f6fcf76cafcfa80fa03af67098ffed755035
   rubocop-performance (1.26.1) sha256=cd19b936ff196df85829d264b522fd4f98b6c89ad271fa52744a8c11b8f71834
   ruby-progressbar (1.13.0) sha256=80fc9c47a9b640d6834e0dc7b3c94c9df37f08cb072b7761e4a71e22cff29b33
+  sass-embedded (1.98.0) sha256=397dcd0071170f079eb97562a035fa113358af10e3ff759a57bc7eef763e9f94
+  sass-embedded (1.98.0-arm64-darwin) sha256=fed4ee6de2f30b14e7a678ca648730aa78acc86be7a555e16ba3fdbc5e6aca69
   standard (1.54.0) sha256=7a4b08f83d9893083c8f03bc486f0feeb6a84d48233b40829c03ef4767ea0100
   standard-custom (1.0.2) sha256=424adc84179a074f1a2a309bb9cf7cd6bfdb2b6541f20c6bf9436c0ba22a652b
   standard-performance (1.9.0) sha256=49483d31be448292951d80e5e67cdcb576c2502103c7b40aec6f1b6e9c88e3f2

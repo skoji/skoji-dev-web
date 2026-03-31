@@ -1,0 +1,63 @@
+.spec-toc {
+  margin-top: 2rem;
+  padding: 1rem 1.25rem;
+  background-color: var(--surface);
+  border-radius: 6px;
+}
+
+.spec-toc h3 {
+  margin-top: 0;
+  font-size: 0.9rem;
+}
+
+.spec-toc ol {
+  margin-bottom: 0;
+  padding-left: 1.25rem;
+}
+
+.spec-toc a {
+  color: var(--accent);
+}
+
+.spec-section {
+  margin-top: 3rem;
+}
+
+.spec-section h3 {
+  font-size: 1.2rem;
+  border-bottom: 1px solid var(--primary);
+  padding-bottom: 0.4rem;
+}
+
+.spec-section h4 {
+  margin-top: 1.5rem;
+  margin-bottom: 0.5rem;
+  font-size: 1rem;
+}
+
+.spec-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9rem;
+  margin-top: 0.75rem;
+}
+
+.spec-table th,
+.spec-table td {
+  text-align: left;
+  padding: 0.5rem 0.75rem;
+  border-bottom: 1px solid var(--surface);
+  vertical-align: top;
+}
+
+.spec-table th {
+  color: var(--muted);
+  font-weight: normal;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.spec-table code {
+  font-size: 0.85em;
+}

@@ -1,0 +1,102 @@
+
+.shelff-hero {
+  text-align: center;
+  padding-block: 3rem 2rem;
+}
+
+.shelff-hero .app-icon {
+  width: 128px;
+  height: 128px;
+  border-radius: 28px;
+  box-shadow: 0 4px 20px rgba(59, 89, 152, 0.2);
+}
+
+.shelff-hero h2 {
+  font-size: 2rem;
+  margin-top: 1.25rem;
+  margin-bottom: 0;
+  letter-spacing: 0.05em;
+  color: var(--text);
+}
+
+.shelff-hero .tagline {
+  font-size: 1.05rem;
+  color: var(--muted);
+  margin-top: 0.5rem;
+}
+
+.shelff-hero .cta-area {
+  margin-top: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.shelff-hero .cta-button {
+  display: inline-block;
+  font-size: 0.9rem;
+  color: #fff;
+  background-color: var(--shelff-blue);
+  padding: 0.5em 1.5em;
+  border-radius: 2em;
+  text-decoration: none;
+  transition: background-color 0.15s;
+}
+
+.shelff-hero .cta-button:visited {
+  color: #fff;
+}
+
+.shelff-hero .cta-button:hover {
+  background-color: #2d4a80;
+}
+
+.shelff-hero .pricing-note {
+  font-size: 0.8rem;
+  color: var(--muted);
+}
+
+.shelff-features {
+  margin-top: 2rem;
+}
+
+.shelff-features h3 {
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: var(--muted);
+  border-bottom: 1px solid var(--surface);
+  padding-bottom: 0.4rem;
+  margin-top: 2.5rem;
+  margin-bottom: 1rem;
+}
+
+.feature {
+  margin-bottom: 1.5rem;
+}
+
+.feature dt {
+  font-weight: bold;
+  font-size: 1rem;
+  margin-bottom: 0.2rem;
+}
+
+.feature dd {
+  margin-left: 0;
+  color: var(--muted);
+  font-size: 0.95rem;
+  line-height: 1.7;
+}
+
+.spec-link {
+  margin-top: 3rem;
+  padding: 1rem 1.25rem;
+  background-color: var(--surface);
+  border-radius: 6px;
+  font-size: 0.9rem;
+}
+
+.spec-link a {
+  color: var(--accent);
+}
