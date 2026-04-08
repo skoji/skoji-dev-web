@@ -6,4 +6,4 @@ gem "isola", "~> 0.3.0"
 
 gem "standard", "~> 1.54"
 
-gem "sass-embedded", "~> 1.98"
+gem "sass-embedded", "~> 1.99"
