@@ -1,0 +1,14 @@
+BEGIN:VCARD
+VERSION:3.0
+N:Kojima;Satoshi;;;
+FN:Satoshi Kojima / 小嶋 智
+ORG:群島舎 (Guntosha)
+EMAIL;TYPE=INTERNET,PREF:skoji@skoji.jp
+URL;TYPE=HOME:https://skoji.jp
+URL;TYPE=WORK:https://skoji.dev
+URL:https://skoji.dev/en/
+URL:https://skoji.dev/shelff/
+X-SOCIALPROFILE;TYPE=twitter:https://twitter.com/skoji
+X-SOCIALPROFILE;TYPE=Mastodon:https://bookwor.ms/@skoji
+NOTE:RubyKaigi 2026 Attendee
+END:VCARD
