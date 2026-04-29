@@ -89,7 +89,12 @@ title: shelff JSON仕様
     "pageLayout": "spread-with-cover"
   },
   "category": "技術書",
-  "tags": ["Swift", "入門"]
+  "tags": ["Swift", "入門"],
+  "bookmarks": [
+    { "page": 3, "label": "重要な図" },
+    { "page": 15 },
+    { "page": 42 }
+  ]
 }</code></pre>
 
   <h4>トップレベルフィールド</h4>
@@ -139,6 +144,12 @@ title: shelff JSON仕様
         <td>文字列の配列</td>
         <td>いいえ</td>
         <td>タグ名の配列</td>
+      </tr>
+      <tr>
+        <td><code>bookmarks</code></td>
+        <td>オブジェクトの配列</td>
+        <td>いいえ</td>
+        <td>ユーザー定義のページしおり（後述）</td>
       </tr>
     </tbody>
   </table>
@@ -270,6 +281,35 @@ title: shelff JSON仕様
         <td>文字列</td>
         <td>いいえ</td>
         <td>ページレイアウト: <code>"single"</code> / <code>"spread"</code> / <code>"spread-with-cover"</code></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h4><code>bookmarks</code>配列</h4>
+
+  <p>ユーザーが任意のページに付与する「しおり」（デジタル付箋）の配列です。PDFに組み込まれたアウトライン（目次）とは別に、読み手が関心のあるページを記録するために使用します。</p>
+
+  <table class="spec-table">
+    <thead>
+      <tr>
+        <th>フィールド</th>
+        <th>型</th>
+        <th>必須</th>
+        <th>説明</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>page</code></td>
+        <td>整数</td>
+        <td>はい</td>
+        <td>しおりを付けたページ番号（1始まり）</td>
+      </tr>
+      <tr>
+        <td><code>label</code></td>
+        <td>文字列</td>
+        <td>いいえ</td>
+        <td>しおりのラベル。省略時はページ番号などをフォールバック表示してよい</td>
       </tr>
     </tbody>
   </table>

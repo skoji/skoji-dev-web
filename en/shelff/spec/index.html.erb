@@ -89,7 +89,12 @@ title: shelff JSON Specification
     "pageLayout": "spread-with-cover"
   },
   "category": "Technical",
-  "tags": ["Swift", "Beginner"]
+  "tags": ["Swift", "Beginner"],
+  "bookmarks": [
+    { "page": 3, "label": "Important diagram" },
+    { "page": 15 },
+    { "page": 42 }
+  ]
 }</code></pre>
 
   <h4>Top-level Fields</h4>
@@ -139,6 +144,12 @@ title: shelff JSON Specification
         <td>Array of strings</td>
         <td>No</td>
         <td>Tag names</td>
+      </tr>
+      <tr>
+        <td><code>bookmarks</code></td>
+        <td>Array of objects</td>
+        <td>No</td>
+        <td>User-defined page bookmarks (see below)</td>
       </tr>
     </tbody>
   </table>
@@ -270,6 +281,35 @@ title: shelff JSON Specification
         <td>String</td>
         <td>No</td>
         <td>Page layout: <code>"single"</code> / <code>"spread"</code> / <code>"spread-with-cover"</code></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h4><code>bookmarks</code> Array</h4>
+
+  <p>An array of user-defined page bookmarks (digital "sticky notes"). These are distinct from the PDF's built-in document outline; readers add them to mark pages of interest.</p>
+
+  <table class="spec-table">
+    <thead>
+      <tr>
+        <th>Field</th>
+        <th>Type</th>
+        <th>Required</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>page</code></td>
+        <td>Integer</td>
+        <td>Yes</td>
+        <td>Bookmarked page number (1-based)</td>
+      </tr>
+      <tr>
+        <td><code>label</code></td>
+        <td>String</td>
+        <td>No</td>
+        <td>Bookmark label. When omitted, readers may fall back to the page number</td>
       </tr>
     </tbody>
   </table>
