@@ -88,6 +88,7 @@ title: shelff JSON仕様
     "direction": "LTR",
     "pageLayout": "spread-with-cover"
   },
+  "collection": { "title": "プログラミング入門シリーズ", "position": 1 },
   "category": "技術書",
   "tags": ["Swift", "入門"],
   "bookmarks": [
@@ -132,6 +133,12 @@ title: shelff JSON仕様
         <td>オブジェクト</td>
         <td>いいえ</td>
         <td>表示設定（後述）</td>
+      </tr>
+      <tr>
+        <td><code>collection</code></td>
+        <td>オブジェクト</td>
+        <td>いいえ</td>
+        <td>所属するコレクション（シリーズ・雑誌）。1つのPDFにつき最大1つ</td>
       </tr>
       <tr>
         <td><code>category</code></td>
@@ -310,6 +317,35 @@ title: shelff JSON仕様
         <td>文字列</td>
         <td>いいえ</td>
         <td>しおりのラベル。省略時はページ番号などをフォールバック表示してよい</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h4><code>collection</code>オブジェクト</h4>
+
+  <p>各PDFが属するシリーズや雑誌を表すオブジェクトです。EPUBの<code>belongs-to-collection</code>/<code>group-position</code>に着想を得て、type区分なしの単一コレクションに簡略化しています。</p>
+
+  <table class="spec-table">
+    <thead>
+      <tr>
+        <th>フィールド</th>
+        <th>型</th>
+        <th>必須</th>
+        <th>説明</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>title</code></td>
+        <td>文字列</td>
+        <td>はい</td>
+        <td>コレクション名</td>
+      </tr>
+      <tr>
+        <td><code>position</code></td>
+        <td>数値</td>
+        <td>いいえ</td>
+        <td>コレクション内の位置。小数も可（例: <code>0.5</code> は特別号・半巻）。雑誌など発行日順で並べる場合は省略</td>
       </tr>
     </tbody>
   </table>

@@ -88,6 +88,7 @@ title: shelff JSON Specification
     "direction": "LTR",
     "pageLayout": "spread-with-cover"
   },
+  "collection": { "title": "Introduction to Programming Series", "position": 1 },
   "category": "Technical",
   "tags": ["Swift", "Beginner"],
   "bookmarks": [
@@ -132,6 +133,12 @@ title: shelff JSON Specification
         <td>Object</td>
         <td>No</td>
         <td>Display settings (see below)</td>
+      </tr>
+      <tr>
+        <td><code>collection</code></td>
+        <td>Object</td>
+        <td>No</td>
+        <td>The collection (series or magazine) this book belongs to. At most one per PDF</td>
       </tr>
       <tr>
         <td><code>category</code></td>
@@ -310,6 +317,35 @@ title: shelff JSON Specification
         <td>String</td>
         <td>No</td>
         <td>Bookmark label. When omitted, readers may fall back to the page number</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h4><code>collection</code> Object</h4>
+
+  <p>An object representing the series or magazine a PDF belongs to. Inspired by EPUB's <code>belongs-to-collection</code> / <code>group-position</code>, simplified to a single collection without a type distinction.</p>
+
+  <table class="spec-table">
+    <thead>
+      <tr>
+        <th>Field</th>
+        <th>Type</th>
+        <th>Required</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>title</code></td>
+        <td>String</td>
+        <td>Yes</td>
+        <td>Name of the collection or series</td>
+      </tr>
+      <tr>
+        <td><code>position</code></td>
+        <td>Number</td>
+        <td>No</td>
+        <td>Position within the collection. Fractional values allowed (e.g. <code>0.5</code> for a special half-volume). Omit for collections ordered by other means such as magazine publication date</td>
       </tr>
     </tbody>
   </table>
