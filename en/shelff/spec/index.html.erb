@@ -16,6 +16,7 @@ title: shelff JSON Specification
     <li><a href="#meta-json">Metadata File</a></li>
     <li><a href="#categories-json">Categories File</a></li>
     <li><a href="#tags-json">Tags File</a></li>
+    <li><a href="#extensions">Extension Fields</a></li>
     <li><a href="#schema">JSON Schema</a></li>
   </ol>
 </nav>
@@ -40,13 +41,13 @@ title: shelff JSON Specification
         <td>Per-PDF metadata, reading progress, and display settings</td>
       </tr>
       <tr>
-        <td><code>categories.json</code></td>
-        <td>shelff document root</td>
+        <td><code>.shelff/categories.json</code></td>
+        <td><code>.shelff</code> directory under the shelff document root</td>
         <td>Category definitions and ordering</td>
       </tr>
       <tr>
-        <td><code>tags.json</code></td>
-        <td>shelff document root</td>
+        <td><code>.shelff/tags.json</code></td>
+        <td><code>.shelff</code> directory under the shelff document root</td>
         <td>Tag display order</td>
       </tr>
     </tbody>
@@ -86,7 +87,12 @@ title: shelff JSON Specification
   },
   "display": {
     "direction": "LTR",
-    "pageLayout": "spread-with-cover"
+    "pageLayout": "spread-with-cover",
+    "crop": {
+      "excludeFirstPage": true,
+      "odd":  { "top": 0.05, "bottom": 0.04, "left": 0.03, "right": 0.03 },
+      "even": { "top": 0.05, "bottom": 0.04, "left": 0.02, "right": 0.04 }
+    }
   },
   "collection": { "title": "Introduction to Programming Series", "position": 1 },
   "category": "Technical",
@@ -289,8 +295,92 @@ title: shelff JSON Specification
         <td>No</td>
         <td>Page layout: <code>"single"</code> / <code>"spread"</code> / <code>"spread-with-cover"</code></td>
       </tr>
+      <tr>
+        <td><code>crop</code></td>
+        <td>Object or <code>null</code></td>
+        <td>No</td>
+        <td>Margin crop (see below). Absent or <code>null</code> means no crop</td>
+      </tr>
     </tbody>
   </table>
+
+  <h4><code>display.crop</code> Object</h4>
+
+  <p>A non-destructive margin crop applied when rendering pages. The PDF file is never modified; readers apply the crop to the displayed page bounds.</p>
+
+  <table class="spec-table">
+    <thead>
+      <tr>
+        <th>Field</th>
+        <th>Type</th>
+        <th>Required</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>odd</code></td>
+        <td>Object</td>
+        <td>Yes</td>
+        <td>Insets for odd-numbered pages (1, 3, 5, …) (see below)</td>
+      </tr>
+      <tr>
+        <td><code>even</code></td>
+        <td>Object</td>
+        <td>Yes</td>
+        <td>Insets for even-numbered pages (2, 4, 6, …) (see below)</td>
+      </tr>
+      <tr>
+        <td><code>excludeFirstPage</code></td>
+        <td>Boolean</td>
+        <td>No</td>
+        <td>When <code>true</code>, page 1 (typically the cover) is displayed uncropped. Defaults to <code>false</code></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <p>Parity is determined by the PDF page number (1-based) and is independent of <code>pageLayout</code> and <code>direction</code>. For a uniform crop, write the same values to both <code>odd</code> and <code>even</code>.</p>
+
+  <p><code>odd</code> / <code>even</code> are objects with the following four fields. Values are ratios (0.0–1.0) of the page's MediaBox, expressed in the page's displayed orientation (after <code>/Rotate</code> is applied).</p>
+
+  <table class="spec-table">
+    <thead>
+      <tr>
+        <th>Field</th>
+        <th>Type</th>
+        <th>Required</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>top</code></td>
+        <td>Number</td>
+        <td>Yes</td>
+        <td>Inset from the top edge, as a ratio of the page height</td>
+      </tr>
+      <tr>
+        <td><code>bottom</code></td>
+        <td>Number</td>
+        <td>Yes</td>
+        <td>Inset from the bottom edge, as a ratio of the page height</td>
+      </tr>
+      <tr>
+        <td><code>left</code></td>
+        <td>Number</td>
+        <td>Yes</td>
+        <td>Inset from the left edge, as a ratio of the page width</td>
+      </tr>
+      <tr>
+        <td><code>right</code></td>
+        <td>Number</td>
+        <td>Yes</td>
+        <td>Inset from the right edge, as a ratio of the page width</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <p>Each value must be <code>&gt;= 0</code>, with <code>top + bottom &lt; 1</code> and <code>left + right &lt; 1</code>. Readers treat a crop that violates these constraints as absent rather than failing. Tools that rewrite <code>display</code> must preserve <code>crop</code>.</p>
 
   <h4><code>bookmarks</code> Array</h4>
 
@@ -354,7 +444,7 @@ title: shelff JSON Specification
 <section class="spec-section" id="categories-json">
   <h3>Categories File <code>categories.json</code></h3>
 
-  <p>Stored in the shelff document root, this file defines the available categories. Each PDF can belong to at most one category.</p>
+  <p>Stored in the <code>.shelff</code> directory under the shelff document root, this file defines the available categories. Each PDF can belong to at most one category.</p>
 
   <h4>Example</h4>
 
@@ -393,7 +483,7 @@ title: shelff JSON Specification
 <section class="spec-section" id="tags-json">
   <h3>Tags File <code>tags.json</code></h3>
 
-  <p>Stored in the shelff document root, this file defines the display order of tags. Tags themselves are defined in the <code>tags</code> field of each PDF's metadata file. This file only manages display ordering.</p>
+  <p>Stored in the <code>.shelff</code> directory under the shelff document root, this file defines the display order of tags. Tags themselves are defined in the <code>tags</code> field of each PDF's metadata file. This file only manages display ordering.</p>
 
   <h4>Example</h4>
 
@@ -423,6 +513,14 @@ title: shelff JSON Specification
       </tr>
     </tbody>
   </table>
+</section>
+
+<section class="spec-section" id="extensions">
+  <h3>Extension Fields</h3>
+
+  <p>All three files allow additional top-level fields. Third-party tools and users storing custom data should use the <code>x-</code> prefix (e.g. <code>x-calibre-id</code>). The same applies inside the <code>metadata</code> object, where standard Dublin Core extensions such as <code>dcterms:</code> are also welcome. The <code>reading</code> and <code>display</code> objects do not allow additional fields.</p>
+
+  <p>Any tool that reads and writes these files, shelff included, must preserve fields it does not understand and write them back unchanged.</p>
 </section>
 
 <section class="spec-section" id="schema">

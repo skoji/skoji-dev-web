@@ -16,6 +16,7 @@ title: shelff JSON仕様
     <li><a href="#meta-json">メタデータファイル</a></li>
     <li><a href="#categories-json">カテゴリファイル</a></li>
     <li><a href="#tags-json">タグファイル</a></li>
+    <li><a href="#extensions">拡張フィールド</a></li>
     <li><a href="#schema">JSON Schema</a></li>
   </ol>
 </nav>
@@ -40,13 +41,13 @@ title: shelff JSON仕様
         <td>個別PDFのメタデータ・読書進捗・表示設定</td>
       </tr>
       <tr>
-        <td><code>categories.json</code></td>
-        <td>shelffドキュメントルート</td>
+        <td><code>.shelff/categories.json</code></td>
+        <td>shelffドキュメントルート直下の<code>.shelff</code>ディレクトリ</td>
         <td>カテゴリの定義と順序</td>
       </tr>
       <tr>
-        <td><code>tags.json</code></td>
-        <td>shelffドキュメントルート</td>
+        <td><code>.shelff/tags.json</code></td>
+        <td>shelffドキュメントルート直下の<code>.shelff</code>ディレクトリ</td>
         <td>タグの表示順序</td>
       </tr>
     </tbody>
@@ -86,7 +87,12 @@ title: shelff JSON仕様
   },
   "display": {
     "direction": "LTR",
-    "pageLayout": "spread-with-cover"
+    "pageLayout": "spread-with-cover",
+    "crop": {
+      "excludeFirstPage": true,
+      "odd":  { "top": 0.05, "bottom": 0.04, "left": 0.03, "right": 0.03 },
+      "even": { "top": 0.05, "bottom": 0.04, "left": 0.02, "right": 0.04 }
+    }
   },
   "collection": { "title": "プログラミング入門シリーズ", "position": 1 },
   "category": "技術書",
@@ -289,8 +295,92 @@ title: shelff JSON仕様
         <td>いいえ</td>
         <td>ページレイアウト: <code>"single"</code> / <code>"spread"</code> / <code>"spread-with-cover"</code></td>
       </tr>
+      <tr>
+        <td><code>crop</code></td>
+        <td>オブジェクト または <code>null</code></td>
+        <td>いいえ</td>
+        <td>余白の調整（後述）。省略または<code>null</code>の場合は調整なし</td>
+      </tr>
     </tbody>
   </table>
+
+  <h4><code>display.crop</code>オブジェクト</h4>
+
+  <p>ページを表示するときに適用する余白の調整（クロップ）です。PDFファイル自体は変更せず、リーダーが表示時にページの表示範囲へ適用します。</p>
+
+  <table class="spec-table">
+    <thead>
+      <tr>
+        <th>フィールド</th>
+        <th>型</th>
+        <th>必須</th>
+        <th>説明</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>odd</code></td>
+        <td>オブジェクト</td>
+        <td>はい</td>
+        <td>奇数ページ（1, 3, 5, …）の余白幅（後述）</td>
+      </tr>
+      <tr>
+        <td><code>even</code></td>
+        <td>オブジェクト</td>
+        <td>はい</td>
+        <td>偶数ページ（2, 4, 6, …）の余白幅（後述）</td>
+      </tr>
+      <tr>
+        <td><code>excludeFirstPage</code></td>
+        <td>真偽値</td>
+        <td>いいえ</td>
+        <td><code>true</code>の場合、1ページ目（通常は表紙）には調整を適用しない。省略時は<code>false</code></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <p>奇偶は PDF のページ番号（1始まり）で決まり、<code>pageLayout</code>や<code>direction</code>には依存しません。全ページに同じ調整を適用する場合は<code>odd</code>と<code>even</code>に同じ値を書きます。</p>
+
+  <p><code>odd</code> / <code>even</code> は次の4フィールドを持つオブジェクトです。値はページの MediaBox に対する比率（0.0〜1.0）で、<code>/Rotate</code>適用後の表示上の向きで定義します。</p>
+
+  <table class="spec-table">
+    <thead>
+      <tr>
+        <th>フィールド</th>
+        <th>型</th>
+        <th>必須</th>
+        <th>説明</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>top</code></td>
+        <td>数値</td>
+        <td>はい</td>
+        <td>上辺から切り落とす幅（ページ高さに対する比率）</td>
+      </tr>
+      <tr>
+        <td><code>bottom</code></td>
+        <td>数値</td>
+        <td>はい</td>
+        <td>下辺から切り落とす幅（ページ高さに対する比率）</td>
+      </tr>
+      <tr>
+        <td><code>left</code></td>
+        <td>数値</td>
+        <td>はい</td>
+        <td>左辺から切り落とす幅（ページ幅に対する比率）</td>
+      </tr>
+      <tr>
+        <td><code>right</code></td>
+        <td>数値</td>
+        <td>はい</td>
+        <td>右辺から切り落とす幅（ページ幅に対する比率）</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <p>各値は0以上で、<code>top + bottom &lt; 1</code>かつ<code>left + right &lt; 1</code>でなければなりません。この条件を満たさない場合、リーダーはエラーにせず「調整なし」として扱います。<code>display</code>を書き換えるツールは<code>crop</code>を保持してください。</p>
 
   <h4><code>bookmarks</code>配列</h4>
 
@@ -354,7 +444,7 @@ title: shelff JSON仕様
 <section class="spec-section" id="categories-json">
   <h3>カテゴリファイル <code>categories.json</code></h3>
 
-  <p>shelffドキュメントルートに保存される、カテゴリの定義ファイルです。各PDFは最大1つのカテゴリに属します。</p>
+  <p>shelffドキュメントルート直下の<code>.shelff</code>ディレクトリに保存される、カテゴリの定義ファイルです。各PDFは最大1つのカテゴリに属します。</p>
 
   <h4>例</h4>
 
@@ -393,7 +483,7 @@ title: shelff JSON仕様
 <section class="spec-section" id="tags-json">
   <h3>タグファイル <code>tags.json</code></h3>
 
-  <p>shelffドキュメントルートに保存される、タグの表示順序ファイルです。タグ自体の定義は各PDFのメタデータファイル内の<code>tags</code>フィールドで行われます。このファイルはタグの表示順序のみを管理します。</p>
+  <p>shelffドキュメントルート直下の<code>.shelff</code>ディレクトリに保存される、タグの表示順序ファイルです。タグ自体の定義は各PDFのメタデータファイル内の<code>tags</code>フィールドで行われます。このファイルはタグの表示順序のみを管理します。</p>
 
   <h4>例</h4>
 
@@ -423,6 +513,14 @@ title: shelff JSON仕様
       </tr>
     </tbody>
   </table>
+</section>
+
+<section class="spec-section" id="extensions">
+  <h3>拡張フィールド</h3>
+
+  <p>3種類のファイルはいずれもトップレベルに未定義のフィールドを置けます。他のツールやユーザーが独自のデータを保存する場合は、フィールド名に<code>x-</code>接頭辞を付けてください（例: <code>x-calibre-id</code>）。<code>metadata</code>オブジェクト内も同様で、Dublin Core の標準拡張（<code>dcterms:</code>など）はそのまま使えます。<code>reading</code>と<code>display</code>は未定義のフィールドを許可しません。</p>
+
+  <p>shelffを含め、これらのファイルを読み書きするツールは、自分が理解しないフィールドを捨てずに書き戻すことが求められます。</p>
 </section>
 
 <section class="spec-section" id="schema">
